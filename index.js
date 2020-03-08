@@ -66,7 +66,12 @@ io.on('connection', function(socket){
 	else{
 		let i = allClients.indexOf(socket);
 		let currentDate = new Date();
-		let currentTime = currentDate.getHours() + ":" + currentDate.getMinutes();
+		let minutes = currentDate.getMinutes().toString();
+		if(minutes.length < 2){
+			minutes = "0" + minutes;
+			
+		}
+		let currentTime = currentDate.getHours() + ":" + minutes;
 		msg = users[i] + ": " + msg;
 		msg = currentTime + " " + msg;
 		allMessages.push(msg);
