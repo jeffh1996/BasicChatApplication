@@ -10,9 +10,17 @@ $(function () {
       $('#m').val('');
       return false;
     });
+	socket.on('connect', function(){
+		allCookies = document.cookie;
+		let cookieValue = document.cookie.replace(/(?:(?:^|.*;\s*)username\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+		if(cookieValue !== ""){
+			socket.emit('set username request', cookieValue);
+		}
+	});
 	socket.on('set username', function(uname){
 		username = uname;
-		$('#currentUser').text(uname);
+		$('#currentUser').text("You are: " + uname);
+		document.cookie = "username=" + uname;
 	});
 	socket.on('user changed', function(users){
 	  $('#userList').empty();
@@ -37,5 +45,9 @@ $(function () {
     });
 	socket.on('update color', function(color){
 		chatColor = color;
+	});
+	socket.on('error message', function(msg){
+		$('#messages').append($('<li>').text(msg));
+		$('#messageBox').scrollTop($('#messageBox')[0].scrollHeight);
 	});
 });

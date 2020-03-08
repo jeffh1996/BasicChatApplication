@@ -26,6 +26,14 @@ io.on('connection', function(socket){
   io.emit('user changed', users);
   socket.emit('load messages', allMessages);
   allClients.push(socket);
+  socket.on('set username request', function(uname){
+	if(!users.includes(uname)){
+		let i = allClients.indexOf(socket);
+		users[i] = uname
+		socket.emit('set username', uname);
+		io.emit('user changed', users);
+	}
+  });
   socket.on('chat message', function(msg){
 	if(msg.startsWith("/")){
 		if(msg.includes('/nickcolor')){
@@ -36,13 +44,13 @@ io.on('connection', function(socket){
 				socket.emit('update color', checkColor);
 			}
 			else{
-				console.log("Invalid color");
+				socket.emit('error message', "SYSTEM: INVALID COLOR");
 			}
 		}
 		else if(msg.includes('/nick')){
 			let checkName = msg.substring(msg.indexOf('/nick')+6);
 			if(users.includes(checkName)){
-				console.log(checkName + " already exists");
+				socket.emit('error message', "SYSTEM: USER NAME ALREADY EXISTS");
 			}
 			else{
 				let i = allClients.indexOf(socket);
@@ -52,7 +60,7 @@ io.on('connection', function(socket){
 			}
 		}
 		else{
-			console.log("Invalid command");
+			socket.emit('error message', 'SYSTEM: INVALID COMMAND');
 		}
 	}
 	else{
@@ -73,6 +81,7 @@ io.on('connection', function(socket){
 	allClients.splice(i, 1);
 	users.splice(i, 1);
 	io.emit('user changed', users);
+	
   });
 });
 
