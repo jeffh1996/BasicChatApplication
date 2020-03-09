@@ -6,6 +6,7 @@
 	  .container { display: flex; height: 100%; max-height: 90%; background: #E59F71; overflow: auto; position: absolute; bottom: 50px; width: 100%; }
 	  #messageBox { width: 70%; max-height: 100%; align-self: flex-end; background: #D36135; overflow: auto;}
 	  #userListBox { width: 30%; background: #0C0C0C; }
+	  #userListHeader { color: #11ff00; }
       #messages { list-style-type: none; margin: 0; padding: 0; width: 100%; }
       #messages li { padding: 5px 10px; }
       #messages li:nth-child(odd) { background: #69DC9E; }

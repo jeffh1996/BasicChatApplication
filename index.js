@@ -10,7 +10,6 @@ let users = [];
 let userColor = [];
 let allClients = [];
 let allMessages = [];
-let messagesSentBy = [];
 
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/client/index.html');
@@ -75,7 +74,6 @@ io.on('connection', function(socket){
 		msg = users[i] + ": " + msg;
 		msg = currentTime + " " + msg;
 		allMessages.push(msg);
-		messagesSentBy.push(allClients.indexOf(socket));
 		socket.broadcast.emit('update group chat', msg, userColor[i]);
 		socket.emit('update self chat', msg);
 	}
